@@ -9,7 +9,9 @@ import Footer from  '../components/Footer';
 import useInitialState from '../hooks/useInitialState';
 import '../assets/styles/App.scss';
 
-const API = 'http://localhost:3000/initalState'
+//const API = 'http://localhost:3000/initalState'
+
+const API = 'https://rickandmortyapi.com/api/character'
 
 const App = () => {
     const initialState = useInitialState(API);
@@ -18,28 +20,32 @@ const App = () => {
             <Header />
             <Search />
 
-            {initialState.mylist.length > 0 &&
-                <Categories title="Mi Lista">
-                    <Carousel>
-                        <CarouselItem />
-                    </Carousel>
-                </Categories>
-            }
-
-            <Categories title="Tendencias">
+            {initialState.results.length > 0 &&
+                <Categories title="Personajes de Ricky And Morty">
                 <Carousel>
-                    {initialState.trends.map(item =>
+                    {initialState.results.map(item =>
                         <CarouselItem key={item.id} {...item}/>
                     )}
                 </Carousel>
-            </Categories>
+                </Categories>
+            }
 
-
-            <Categories title="Hecho para ti">
+           {/*  <Categories title="Tendencias">
                 <Carousel>
-                    <CarouselItem />
+                    {initialState.results.map(item =>
+                        <CarouselItem key={item.id} {...item}/>
+                    )}
                 </Carousel>
-            </Categories>
+            </Categories> */}
+
+
+            {/* <Categories title="Hecho para ti">
+            <Carousel>
+                    {initialState.results.map(item =>
+                        <CarouselItem key={item.id} {...item}/>
+                    )}
+                </Carousel>
+            </Categories> */}
 
             <Footer />
         </div>
