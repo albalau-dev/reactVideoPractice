@@ -1,54 +1,49 @@
-import React from 'react';
+//Como se va a trabajar con estados y ciclos de vidas en las funciones se  importan las funciones useState y useEffect
+import React, { useState, useEffect } from 'react';
 import Header from '../components/Header';
 import Search from  '../components/Search'
 import Categories from '../components/Categories';
 import Carousel from  '../components/Carousel';
 import CarouselItem from  '../components/CarouselItem';
 import Footer from  '../components/Footer';
+import useInitialState from '../hooks/useInitialState';
 import '../assets/styles/App.scss';
 
+const API = 'http://localhost:3000/initalState'
 
-const App = () =>(
-    <div className="App">
-        <Header />
-        <Search />
+const App = () => {
+    const initialState = useInitialState(API);
+    return initialState.length === 0 ? <h1>Loading...</h1> : (
+        <div className="App">
+            <Header />
+            <Search />
 
-        <Categories title="Mi Lista">
-            <Carousel>
-                <CarouselItem />
-                <CarouselItem />
-                <CarouselItem />
-                <CarouselItem />
-                <CarouselItem />
-                <CarouselItem />
-            </Carousel>
-        </Categories>
+            {initialState.mylist.length > 0 &&
+                <Categories title="Mi Lista">
+                    <Carousel>
+                        <CarouselItem />
+                    </Carousel>
+                </Categories>
+            }
 
-        <Categories title="Tendencias">
-            <Carousel>
-                <CarouselItem />
-                <CarouselItem />
-                <CarouselItem />
-                <CarouselItem />
-                <CarouselItem />
-                <CarouselItem />
-                <CarouselItem />
-                <CarouselItem />
-            </Carousel>
-        </Categories>
+            <Categories title="Tendencias">
+                <Carousel>
+                    {initialState.trends.map(item =>
+                        <CarouselItem key={item.id} {...item}/>
+                    )}
+                </Carousel>
+            </Categories>
 
 
-        <Categories title="Hecho para ti">
-            <Carousel>
-                <CarouselItem />
-                <CarouselItem />
-                <CarouselItem />
-                <CarouselItem />
-            </Carousel>
-        </Categories>
+            <Categories title="Hecho para ti">
+                <Carousel>
+                    <CarouselItem />
+                </Carousel>
+            </Categories>
 
-        <Footer />
-    </div>
-);
+            <Footer />
+        </div>
+    )
+    };
 
 export default App;
